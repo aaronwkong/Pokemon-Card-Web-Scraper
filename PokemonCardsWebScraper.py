@@ -3,8 +3,47 @@ from bs4 import BeautifulSoup
 
 results = []
 
-urls = ['https://breakawaysc.com/product/pokemon-sword-and-shield-evolving-skies-booster-box/',
-#'https://zephyrepic.com/product/pokemon-sword-and-shield-chilling-reign-booster-box-raffle-item/'
+
+# The Cards Vault and HappyTCG
+urls = ['https://thecardsvault.com/product/pre-order-pokemon-chilling-reign-booster-box-available',
+'https://happytcg.ca/shop/pokemon-tcg/latest-sets/chilling-reign/sword-shield-chilling-reign-booster-box-pre-order/'
+]
+for url in urls:
+    header = {
+    'User-Agent': 'My User Agent 1.0',
+    'From': 'youremail@domain.com'
+    }
+    response = requests.get(url,headers=header)
+    soup = BeautifulSoup(response.text, "html.parser")
+    price = list(soup.find('p', {'class':'price'}).descendants)[4]
+    stock = soup.find(attrs={'class':'in-stock'})
+    if (str(stock) != 'None'):
+        stock = list(stock.stripped_strings)[0]
+    else:
+        stock = "Sold Out"
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+
+
+# KD Collectibles and Game Palace
+urls = ['https://kdcollectibles.ca/collections/pokemon-booster-boxes/products/chilling-reign-booster-box-ships-immediately',
+'https://gamepalace.ca/products/pre-order-pokemon-chilling-reign-booster-box?_pos=1&_sid=d0c3e4848&_ss=r&variant=39927348232388'
+]
+for url in urls:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    price = list(soup.find(id='ProductPrice').stripped_strings)[0]
+    stock = list(soup.find(id='AddToCartText').stripped_strings)[0]
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+
+
+# BreakawaySC and Zephr Epic
+urls = ['https://breakawaysc.com/product/pokemon-sword-and-shield-chilling-reign-booster-box/',
+'https://zephyrepic.com/product/pokemon-sword-and-shield-chilling-reign-booster-box-raffle-item/'
 ]
 for url in urls:
     # Need to pretend to be a web browser and breakawaysc doesn't allow automated python requests
@@ -19,14 +58,15 @@ for url in urls:
     if (stock != 'None'):
         stock = soup.find('input', {'name':'quantity'})["max"] + " in stock"
     else:
-        stock = "Out of stock"
+        stock = "Sold Out"
     title = soup.find('meta', property='og:site_name')["content"]
     data = (price, stock, title)
     results.append(data)
 
 
-urls = [#'https://www.spshop.ca/collections/booster-boxes/products/pokemon-chilling-reign-booster-box',
-'https://store.401games.ca/collections/pokemon-sealed-product/products/pokemon-evolving-skies-booster-box-pre-order'
+# SP Shop and 401 Games
+urls = ['https://www.spshop.ca/collections/booster-boxes/products/pokemon-chilling-reign-booster-box',
+'https://store.401games.ca/collections/pokemon-sealed-product/products/pokemon-chillingreign-boosterbox'
 ]
 for url in urls:
     response = requests.get(url)
