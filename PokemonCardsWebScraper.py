@@ -4,13 +4,14 @@ from bs4 import BeautifulSoup
 results = []
 
 
-# Jeux3Dragons, TopDeck Hero, Gods Arena, Dolly's, The Toy Trove, and Dragon World
+# Jeux3Dragons, TopDeck Hero, Gods Arena, Dolly's, The Toy Trove, Dragon World, and Atlas Collectables
 urls = ['https://www.jeux3dragons.com/catalog/pokemon_sealed_products/sword__shield_chilling_reign_booster_box/497704',
 'https://www.topdeckhero.com/catalog/pokemon_sealed_products-pokemon_booster_box/chilling_reign_booster_box/477706',
 'https://www.godsarena.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/1706783',
 'https://www.dollys.ca/catalog/pokemon_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/741283',
 'https://www.thetoytrove.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/2043790',
 'https://dragontcg.crystalcommerce.com/catalog/pokemon_sealed_products__u-pokemon_booster_boxes/pokemon_swsh6_chilling_reign_booster_box/2052236',
+'https://www.atlascollectables.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield__battle_styles_booster_box/2043841'
 ]
 for url in urls:
     header = {
