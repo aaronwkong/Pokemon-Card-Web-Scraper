@@ -4,6 +4,34 @@ from bs4 import BeautifulSoup
 results = []
 
 
+# Jeux3Dragons, TopDeck Hero, Gods Arena, Dolly's, The Toy Trove, and Dragon World
+urls = ['https://www.jeux3dragons.com/catalog/pokemon_sealed_products/sword__shield_chilling_reign_booster_box/497704',
+'https://www.topdeckhero.com/catalog/pokemon_sealed_products-pokemon_booster_box/chilling_reign_booster_box/477706',
+'https://www.godsarena.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/1706783',
+'https://www.dollys.ca/catalog/pokemon_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/741283',
+'https://www.thetoytrove.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/2043790',
+'https://dragontcg.crystalcommerce.com/catalog/pokemon_sealed_products__u-pokemon_booster_boxes/pokemon_swsh6_chilling_reign_booster_box/2052236',
+]
+for url in urls:
+    header = {
+    'User-Agent': 'My User Agent 1.0',
+    'From': 'youremail@domain.com'
+    }
+    response = requests.get(url,headers=header)
+    soup = BeautifulSoup(response.text, "html.parser")
+    stock = soup.select("span.price.no-stock") # select multiple classes
+    price = ""
+    if (stock != []): # out of stock
+        price = list(stock[0].stripped_strings)[0]
+        stock = "Sold Out"
+    else: # in stock
+        price = list(soup.find(attrs={'class':'regular price'}).stripped_strings)[0]
+        stock = soup.find(attrs={'name':'qty'})["max"] + " in stock"
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+
+
 # The Cards Vault and HappyTCG
 urls = ['https://thecardsvault.com/product/pre-order-pokemon-chilling-reign-booster-box-available',
 'https://happytcg.ca/shop/pokemon-tcg/latest-sets/chilling-reign/sword-shield-chilling-reign-booster-box-pre-order/'
