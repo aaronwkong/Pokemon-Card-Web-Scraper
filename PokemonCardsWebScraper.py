@@ -5,6 +5,49 @@ from selenium import webdriver
 results = []
 
 
+
+# New Realm Games, Cardboard Memories, Face to Face Games
+urls = ['https://newrealmgames.com/collections/pokemon-sealed-product/products/pokemon-chilling-reign-booster-box-pre-order-june-2021',
+'https://www.cardboardmemories.ca/products/pokemon-sword-and-shield-chilling-reign-booster-box?',
+'https://www.facetofacegames.com/pokemon-tcg-sword-shield-chilling-reign-booster-box/'
+]
+for url in urls:
+    options = webdriver.ChromeOptions() 
+    options.add_experimental_option("excludeSwitches", ["enable-logging"]) # Surpess bluetooth adapter error since my pc doesn't have bluetooth
+    browser = webdriver.Chrome(options=options) # Need to use chromium webdriver since these websites load stock dynamically
+    browser.get(url)
+
+    soup = BeautifulSoup(browser.page_source, "html.parser")
+
+    price = soup.find('meta', property='og:price:amount')
+    if (str(price) == 'None'): # Some are a bit different
+        price = soup.find('meta', property='product:price:amount')
+    price = price["content"]
+    # These websites are all a bit different so will go through each. Although it is less efficient, it makes the code shorter
+    stock = soup.find(attrs={'class':'stock_quantity'}) # New Realm Games
+    if (str(stock) != 'None'): 
+        stock = list(stock.stripped_strings)
+        if (stock == []):
+            stock = "Sold Out"
+        else:
+            stock = stock[0] + " in stock"
+    else:
+        stock = soup.find(attrs={'class':'form-field--stock'}) # Face to Face Games
+        if (str(stock) != 'None'):
+            stock = list(list(list(stock.children)[1])[1].stripped_strings)[0] + " in stock"
+        else:
+            stock = soup.find(attrs={'class':'product-vendor'}) # Cardboard Memories
+            if (str(stock) != 'None'):
+                stock = list(list(stock.children)[1].stripped_strings)[0]
+            else:
+                stock = "Not Found"
+        
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+    browser.close()
+
+
 # Fox and Dragon Hobbies, Optimum Collection
 urls = ['https://www.foxanddragonhobbies.ca/collections/pokemon-cards/products/presale-booster-box-chilling-reign-pokemon-cards',
 'https://optimumcollection.ca/products/pokemon-chilling-reign-booster-box-pre-order'
@@ -117,7 +160,7 @@ for url in urls:
     results.append(data)
 
 
-# KD Collectibles and Game Palace
+# KD Collectibles, Game Palace, Skyfox Games
 urls = ['https://kdcollectibles.ca/collections/pokemon-booster-boxes/products/chilling-reign-booster-box-ships-immediately',
 'https://gamepalace.ca/products/pre-order-pokemon-chilling-reign-booster-box?_pos=1&_sid=d0c3e4848&_ss=r&variant=39927348232388',
 'https://skyfoxgames.com/collections/booster-box/products/pokemon-chilling-reign-booster-box-pre-order'
