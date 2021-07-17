@@ -1,7 +1,27 @@
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
 results = []
+
+
+# Fox and Dragon Hobbies, Optimum Collection
+urls = ['https://www.foxanddragonhobbies.ca/collections/pokemon-cards/products/presale-booster-box-chilling-reign-pokemon-cards',
+'https://optimumcollection.ca/products/pokemon-chilling-reign-booster-box-pre-order'
+]
+for url in urls:
+    options = webdriver.ChromeOptions() 
+    options.add_experimental_option("excludeSwitches", ["enable-logging"]) # Surpess bluetooth adapter error since my pc doesn't have bluetooth
+    browser = webdriver.Chrome(options=options) # Need to use chromium webdriver since these websites load stock dynamically
+    browser.get(url)
+
+    soup = BeautifulSoup(browser.page_source, "html.parser")
+    price = soup.find('meta', property='og:price:amount')["content"]
+    stock = list(soup.find(id='addToCart-product-template').stripped_strings)[0]
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+    browser.close()
 
 
 # Infinity Cards & Collectibles, House of Cards, Miraj Trading, Duel Kingdom

@@ -1,0 +1,5 @@
+Selenium, 
+bs4
+
+Install correct chromedriver for your chrome browser and add it to PATH.
+https://sites.google.com/a/chromium.org/chromedriver/downloads 
