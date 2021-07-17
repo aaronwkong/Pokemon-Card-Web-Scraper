@@ -4,8 +4,31 @@ from bs4 import BeautifulSoup
 results = []
 
 
+# Infinity Cards & Collectibles, House of Cards, Miraj Trading
+urls = [#'https://www.infinitycards.ca/collections/booster-box/products/pre-order-swsh5-battle-styles-booster-box-releases-march-19-2021',
+'https://houseofcards.ca/collections/pokemon-booster-boxes/products/sword-shield-chilling-reign-booster-box-preorder',
+'https://www.mirajtrading.com/collections/pokemon/products/pokemonswordshieldchillingreignboosterbox'
+]
+for url in urls:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    price = soup.find('meta', property='og:price:amount')
+    if (str(price) == 'None'): # Miraj Trading is a bit different
+        price = soup.find('meta', property='product:price:amount')
+    price = price["content"]
+    stock = soup.find(attrs={'class':'button--disabled'})
+    if (str(stock) != 'None'): # Out of stock, add to cart button is disabled
+        stock = "Sold Out"
+    else:
+        stock = list(soup.find(attrs={'data-action':'add-to-cart'}).stripped_strings)[0]
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+
+
 # J&J and Prisma TCG
-urls = ['https://shop.jjcards.com/Pokemon-Sword-Shield-Battle-Styles-Booster-Box_p_20799.html',
+urls = [#'https://shop.jjcards.com/Pokemon-Sword-Shield-Battle-Styles-Booster-Box_p_20799.html',
 'https://www.prismatcg.com/chilling-reign-pokemon-tcg-booster-box-w2'
 ]
 for url in urls:
