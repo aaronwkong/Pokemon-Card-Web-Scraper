@@ -4,6 +4,21 @@ from bs4 import BeautifulSoup
 results = []
 
 
+# J&J and Prisma TCG
+urls = ['https://shop.jjcards.com/Pokemon-Sword-Shield-Battle-Styles-Booster-Box_p_20799.html',
+'https://www.prismatcg.com/chilling-reign-pokemon-tcg-booster-box-w2'
+]
+for url in urls:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    price = list(soup.find(id='price').stripped_strings)[0]
+    stock = list(soup.find(id='availability').stripped_strings)[0]
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+
+
 # Jeux3Dragons, TopDeck Hero, Gods Arena, Dolly's, The Toy Trove, Dragon World, and Atlas Collectables
 urls = ['https://www.jeux3dragons.com/catalog/pokemon_sealed_products/sword__shield_chilling_reign_booster_box/497704',
 'https://www.topdeckhero.com/catalog/pokemon_sealed_products-pokemon_booster_box/chilling_reign_booster_box/477706',
@@ -44,7 +59,9 @@ for url in urls:
     }
     response = requests.get(url,headers=header)
     soup = BeautifulSoup(response.text, "html.parser")
-    price = list(soup.find('p', {'class':'price'}).descendants)[4]
+    price = list(soup.find('p', {'class':'price'}).descendants)
+    length = len(price)
+    price = price[length - 1] # Price is always last item in list
     stock = soup.find(attrs={'class':'in-stock'})
     if (str(stock) != 'None'):
         stock = list(stock.stripped_strings)[0]
@@ -84,7 +101,7 @@ for url in urls:
     soup = BeautifulSoup(response.text, "html.parser")
     price = list(soup.find('bdi').children)[1]
     stock = soup.find('div', {'class':'out-of-stock'})
-    if (stock != 'None'):
+    if (str(stock) != 'None'):
         stock = soup.find('input', {'name':'quantity'})["max"] + " in stock"
     else:
         stock = "Sold Out"
