@@ -24,18 +24,20 @@ for url in urls:
     browser.close()
 
 
-# Infinity Cards & Collectibles, House of Cards, Miraj Trading, Duel Kingdom
+# Infinity Cards & Collectibles, House of Cards, Miraj Trading, Duel Kingdom, K-OS Collectibles
 urls = [#'https://www.infinitycards.ca/collections/booster-box/products/pre-order-swsh5-battle-styles-booster-box-releases-march-19-2021',
 'https://houseofcards.ca/collections/pokemon-booster-boxes/products/sword-shield-chilling-reign-booster-box-preorder',
 'https://www.mirajtrading.com/collections/pokemon/products/pokemonswordshieldchillingreignboosterbox',
-'https://duelkingdom.ca/collections/pokemon-booster-boxes/products/pokemon-tcg-sword-shield-chilling-reign-booster-box'
+'https://duelkingdom.ca/collections/pokemon-booster-boxes/products/pokemon-tcg-sword-shield-chilling-reign-booster-box',
+'https://koscollectibles.ca/collections/pokemon/products/sword-and-shield-vivid-voltage-booster-box',
+'https://koscollectibles.ca/collections/pokemon/products/chilling-reign-booster'
 ]
 for url in urls:
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
     price = soup.find('meta', property='og:price:amount')
-    if (str(price) == 'None'): # Miraj Trading is a bit different
+    if (str(price) == 'None'): # Miraj Trading and K-OS Collectibles are a bit different
         price = soup.find('meta', property='product:price:amount')
     price = price["content"]
     stock = soup.find(attrs={'class':'button--disabled'})
