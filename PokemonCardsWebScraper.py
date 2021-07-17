@@ -1,8 +1,39 @@
 import requests
+import json
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
 results = []
+
+
+# The League's Den
+urls = ['https://www.theleaguesden.com/product/pokemon-tcg-sword-shield-chilling-reign-booster-box-sealed-36-packs-/68'
+]
+for url in urls:
+    options = webdriver.ChromeOptions() 
+    options.add_experimental_option("excludeSwitches", ["enable-logging"]) # Surpess bluetooth adapter error since my pc doesn't have bluetooth
+    browser = webdriver.Chrome(options=options) # Need to use chromium webdriver since these websites load stock dynamically
+
+    data = 'None'
+    while(str(data) == 'None'): # Occasionally returns none, so loop until it doesn't
+        browser.get(url)
+        soup = BeautifulSoup(browser.page_source, "html.parser")
+        data = soup.find('script', type='application/ld+json')
+
+    data = json.loads(list(data.children)[0])['mainEntity']['offers']
+
+    price = str(data['price'])
+    stockList = data['availability'].split('/')
+    length = len(stockList)
+    stock = stockList[length - 1]
+    if (str(stock) == 'InStock'):
+        stock = "In Stock"
+    elif (str(stock) == "OutOfStock"):
+        stock = "Sold Out"
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+    browser.close()
 
 
 
