@@ -4,10 +4,11 @@ from bs4 import BeautifulSoup
 results = []
 
 
-# Infinity Cards & Collectibles, House of Cards, Miraj Trading
+# Infinity Cards & Collectibles, House of Cards, Miraj Trading, Duel Kingdom
 urls = [#'https://www.infinitycards.ca/collections/booster-box/products/pre-order-swsh5-battle-styles-booster-box-releases-march-19-2021',
 'https://houseofcards.ca/collections/pokemon-booster-boxes/products/sword-shield-chilling-reign-booster-box-preorder',
-'https://www.mirajtrading.com/collections/pokemon/products/pokemonswordshieldchillingreignboosterbox'
+'https://www.mirajtrading.com/collections/pokemon/products/pokemonswordshieldchillingreignboosterbox',
+'https://duelkingdom.ca/collections/pokemon-booster-boxes/products/pokemon-tcg-sword-shield-chilling-reign-booster-box'
 ]
 for url in urls:
     response = requests.get(url)
