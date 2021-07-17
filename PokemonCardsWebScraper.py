@@ -29,8 +29,7 @@ urls = [#'https://www.infinitycards.ca/collections/booster-box/products/pre-orde
 'https://houseofcards.ca/collections/pokemon-booster-boxes/products/sword-shield-chilling-reign-booster-box-preorder',
 'https://www.mirajtrading.com/collections/pokemon/products/pokemonswordshieldchillingreignboosterbox',
 'https://duelkingdom.ca/collections/pokemon-booster-boxes/products/pokemon-tcg-sword-shield-chilling-reign-booster-box',
-'https://koscollectibles.ca/collections/pokemon/products/sword-and-shield-vivid-voltage-booster-box',
-'https://koscollectibles.ca/collections/pokemon/products/chilling-reign-booster'
+'https://koscollectibles.ca/collections/pokemon/products/sword-and-shield-vivid-voltage-booster-box'
 ]
 for url in urls:
     response = requests.get(url)
@@ -120,13 +119,14 @@ for url in urls:
 
 # KD Collectibles and Game Palace
 urls = ['https://kdcollectibles.ca/collections/pokemon-booster-boxes/products/chilling-reign-booster-box-ships-immediately',
-'https://gamepalace.ca/products/pre-order-pokemon-chilling-reign-booster-box?_pos=1&_sid=d0c3e4848&_ss=r&variant=39927348232388'
+'https://gamepalace.ca/products/pre-order-pokemon-chilling-reign-booster-box?_pos=1&_sid=d0c3e4848&_ss=r&variant=39927348232388',
+'https://skyfoxgames.com/collections/booster-box/products/pokemon-chilling-reign-booster-box-pre-order'
 ]
 for url in urls:
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
-    price = list(soup.find(id='ProductPrice').stripped_strings)[0]
+    price = soup.find('meta', property='og:price:amount')["content"]
     stock = list(soup.find(id='AddToCartText').stripped_strings)[0]
     title = soup.find('meta', property='og:site_name')["content"]
     data = (price, stock, title)
