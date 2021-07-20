@@ -6,6 +6,21 @@ from selenium import webdriver
 results = []
 
 
+# Game Shack
+urls = ['https://gameshack.ca/pokemon-ss5-chilling-reign-booster-box.html'
+]
+for url in urls:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    data = soup.find(attrs={'class':'add-to-cart-wrapper'}) # Only way to find the right price since website is weird with prices
+    price = list(data.find(attrs={'class':'price'}).stripped_strings)[0]
+    stock = list(list(data.find(attrs={'class':'availability'}).children)[1].stripped_strings)[0]
+    title = list(list(soup.find(attrs={'class':'logo'}).children)[0].stripped_strings)[0]
+    data = (price, stock, title)
+    results.append(data)
+
+
 # The League's Den
 urls = ['https://www.theleaguesden.com/product/pokemon-tcg-sword-shield-chilling-reign-booster-box-sealed-36-packs-/68'
 ]
@@ -145,7 +160,7 @@ urls = ['https://www.jeux3dragons.com/catalog/pokemon_sealed_products/sword__shi
 'https://www.dollys.ca/catalog/pokemon_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/741283',
 'https://www.thetoytrove.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/2043790',
 'https://dragontcg.crystalcommerce.com/catalog/pokemon_sealed_products__u-pokemon_booster_boxes/pokemon_swsh6_chilling_reign_booster_box/2052236',
-'https://www.atlascollectables.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield__battle_styles_booster_box/2043841'
+#'https://www.atlascollectables.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield__battle_styles_booster_box/2043841'
 ]
 for url in urls:
     header = {
