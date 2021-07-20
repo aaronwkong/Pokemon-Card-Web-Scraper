@@ -6,6 +6,50 @@ from selenium import webdriver
 results = []
 
 
+# Wizard's Tower / Kanata Tcg
+urls = ['https://www.kanatacg.com/catalog/pokemon_sealed_products-pokemon_booster_packs/chilling_reign_booster_box_36_packs/499031'
+]
+for url in urls:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # Sometimes they use spans / classes, othertimes no just straight up tables
+    price = soup.find('span',{'class':'price'})
+    stock = soup.find('span',{'class':'qty'})
+    if (str(price) == 'None' or str(stock) == 'None'):
+        # Only way to find the right price since website is weird with prices
+        data = list(list(soup.find(attrs={'class':'invisible-table cell-center'}).children)[3].children) # first is head, second is body, but \n every other item
+        data = list(data[1].children) # Get all the row data
+        length = len(data)
+        price = list(data[length - 6].stripped_strings)[0]
+        stock = list(data[length - 4].stripped_strings)[0]
+    else:
+        price = list(price.stripped_strings)[0]
+        stock = list(stock.stripped_strings)[0] + " in stock"
+    
+    title = list(soup.find('title').stripped_strings)[0].split('-')[0]
+    data = (price, stock, title)
+    results.append(data)
+
+
+
+# Magic Stronghold
+#urls = ['https://www.magicstronghold.com/store/category/Pokemon%20Sealed%20Product/item/239517/Sword_&_Shield:_Chilling_Reign_Booster_Box',
+#'https://www.magicstronghold.com/store/category/Pokemon%20Sealed%20Product/item/110403/Sun_&_Moon_-_Crimson_Invasion_Booster_Box'
+#]
+#for url in urls:
+#    response = requests.get(url)
+#    soup = BeautifulSoup(response.text, "html.parser")
+
+    #For whatever reason this doesn't load, even with chromedriver or headers
+ #   price = soup.find('span',{'class':'price'})
+#    stock = soup.find('div',{'class':'stock'})
+#    title = soup.find(id='fullStoreName') 
+#    data = (price, stock, title)
+#    print(data)
+#    results.append(data)
+
+
 # Game Shack
 urls = ['https://gameshack.ca/pokemon-ss5-chilling-reign-booster-box.html'
 ]
