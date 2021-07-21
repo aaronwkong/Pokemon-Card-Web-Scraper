@@ -5,6 +5,44 @@ from selenium import webdriver
 
 results = []
 
+# Red Nails 2
+urls = ['https://www.rednails2.com/gaming/pokemon/pokemon-sword-and-shield-chilling-reign-booster-box/'
+]
+for url in urls:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    price = soup.find('p', {'class':'price'})
+    price = list(price.find('span', {'class':'woocommerce-Price-amount'}).children)
+    length = len(price)
+    price = price[length - 1] # Price is last one
+    stock = soup.find('button',{'name':'add-to-cart'})
+    if (str(stock) == 'None'):
+        stock = "Sold Out"
+    else:
+        stock = list(stock.stripped_strings)[0]    
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+
+
+# Kanzen Games, Skaf Express
+urls = ['https://kanzengames.com/collections/cr-sealed-product/products/copy-of-pokemon-chilling-reign-booster-box-pre-order-june-18th-2021',
+#'https://www.skafexpress.ca/products/pokemon-swsh6-chilling-reign-elite-trainer-box-blue'
+]
+for url in urls:
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    price = soup.find('meta', property='og:price:amount')
+    if (str(price) == 'None'): # Skaf Express is different
+        price = soup.find('meta', property='product:price:amount')
+    price = price["content"]
+    stock = list(list(soup.find('button',{'name':'add'}).children)[1].stripped_strings)[0]
+    title = soup.find('meta', property='og:site_name')["content"]
+    data = (price, stock, title)
+    results.append(data)
+
 
 # Wizard's Tower / Kanata Tcg
 urls = ['https://www.kanatacg.com/catalog/pokemon_sealed_products-pokemon_booster_packs/chilling_reign_booster_box_36_packs/499031'
