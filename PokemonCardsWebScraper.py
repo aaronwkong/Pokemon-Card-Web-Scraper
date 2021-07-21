@@ -344,21 +344,30 @@ for url in urls:
 
 
 # Align titles
-longest = 0
+longestStoreName = 0
+longestPrice = 0
 for result in results:
-    if (len(result[2]) > longest):
-        longest = len(result[2])
+    # Find longest store name
+    if (len(result[2]) > longestStoreName): 
+        longestStoreName = len(result[2])
+    # Find longest price
+    if (len(result[0]) > longestPrice): 
+        longestPrice = len(result[0])
+
         
 # Write results
 f = open("results.txt", "w")
 f.truncate(0)
 for result in results:
     f.write(result[2])
-    spacesLineup = longest - len(result[2])
-    for i in range(spacesLineup):
+    spacesLineup = longestStoreName - len(result[2])
+    for i in range(spacesLineup): # Pad everything to be equal to longest store name
         f.write(' ')
     f.write('\t\t\t')
     f.write(result[0])
+    spacesLineup = longestPrice - len(result[0])
+    for i in range(spacesLineup): # Pad everything to be equal to longest price
+        f.write(' ')
     f.write('\t\t\t')
     f.write(result[1])
     f.write('\n')
