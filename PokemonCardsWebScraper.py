@@ -195,12 +195,13 @@ for url in urls:
     browser.close()
 
 
-# Infinity Cards & Collectibles, House of Cards, Miraj Trading, Duel Kingdom, K-OS Collectibles
+# Infinity Cards & Collectibles, House of Cards, Miraj Trading, Duel Kingdom, K-OS Collectibles, Geekitude
 urls = [#'https://www.infinitycards.ca/collections/booster-box/products/pre-order-swsh5-battle-styles-booster-box-releases-march-19-2021',
 'https://houseofcards.ca/collections/pokemon-booster-boxes/products/sword-shield-chilling-reign-booster-box-preorder',
 'https://www.mirajtrading.com/collections/pokemon/products/pokemonswordshieldchillingreignboosterbox',
 'https://duelkingdom.ca/collections/pokemon-booster-boxes/products/pokemon-tcg-sword-shield-chilling-reign-booster-box',
-'https://koscollectibles.ca/collections/pokemon/products/sword-and-shield-vivid-voltage-booster-box'
+'https://koscollectibles.ca/collections/pokemon/products/sword-and-shield-vivid-voltage-booster-box',
+'https://geekittude.com/products/pokemon-sword-shield-chilling-reign-booster-box'
 ]
 for url in urls:
     response = requests.get(url)
