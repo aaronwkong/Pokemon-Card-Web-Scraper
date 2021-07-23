@@ -1,5 +1,6 @@
 import requests
 import json
+import re
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
@@ -22,7 +23,7 @@ for url in urls:
     else:
         stock = list(stock.stripped_strings)[0]    
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -40,7 +41,7 @@ for url in urls:
     price = price["content"]
     stock = list(list(soup.find('button',{'name':'add'}).children)[1].stripped_strings)[0]
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -66,7 +67,7 @@ for url in urls:
         stock = list(stock.stripped_strings)[0] + " in stock"
     
     title = list(soup.find('title').stripped_strings)[0].split('-')[0]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -83,7 +84,7 @@ for url in urls:
  #   price = soup.find('span',{'class':'price'})
 #    stock = soup.find('div',{'class':'stock'})
 #    title = soup.find(id='fullStoreName') 
-#    data = (price, stock, title)
+#    data = [price, stock, title]
 #    print(data)
 #    results.append(data)
 
@@ -99,7 +100,7 @@ for url in urls:
     price = list(data.find(attrs={'class':'price'}).stripped_strings)[0]
     stock = list(list(data.find(attrs={'class':'availability'}).children)[1].stripped_strings)[0]
     title = list(list(soup.find(attrs={'class':'logo'}).children)[0].stripped_strings)[0]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -128,7 +129,7 @@ for url in urls:
     elif (str(stock) == "OutOfStock"):
         stock = "Sold Out"
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
     browser.close()
 
@@ -171,7 +172,7 @@ for url in urls:
                 stock = "Not Found"
         
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
     browser.close()
 
@@ -190,7 +191,7 @@ for url in urls:
     price = soup.find('meta', property='og:price:amount')["content"]
     stock = list(soup.find(id='addToCart-product-template').stripped_strings)[0]
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
     browser.close()
 
@@ -217,7 +218,7 @@ for url in urls:
     else:
         stock = list(soup.find(attrs={'data-action':'add-to-cart'}).stripped_strings)[0]
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -232,7 +233,7 @@ for url in urls:
     price = list(soup.find(id='price').stripped_strings)[0]
     stock = list(soup.find(id='availability').stripped_strings)[0]
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -261,7 +262,7 @@ for url in urls:
         price = list(soup.find(attrs={'class':'regular price'}).stripped_strings)[0]
         stock = soup.find(attrs={'name':'qty'})["max"] + " in stock"
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -285,7 +286,7 @@ for url in urls:
     else:
         stock = "Sold Out"
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -301,7 +302,7 @@ for url in urls:
     price = soup.find('meta', property='og:price:amount')["content"]
     stock = list(soup.find(id='AddToCartText').stripped_strings)[0]
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -324,7 +325,7 @@ for url in urls:
     else:
         stock = "Sold Out"
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
 
@@ -339,9 +340,22 @@ for url in urls:
     price = list(soup.find(id='ProductPrice-product-template').stripped_strings)[0]
     stock = list(soup.find(id='AddToCartText-product-template').stripped_strings)[0]
     title = soup.find('meta', property='og:site_name')["content"]
-    data = (price, stock, title)
+    data = [price, stock, title]
     results.append(data)
 
+
+# result = (price, stock, title)
+# Filter prices
+index = 0
+while index < len(results):
+    results[index][0] = re.sub("[^0-9,.]", "", results[index][0])
+    index += 1
+
+# Sort by price
+def get_price(result):
+    return result[0]
+
+results.sort(key=get_price)
 
 # Align titles
 longestStoreName = 0
