@@ -1,15 +1,18 @@
 import requests
 import json
 import re
+from Url import *
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
 results = []
 
 # Red Nails 2
-urls = ['https://www.rednails2.com/gaming/pokemon/pokemon-sword-and-shield-chilling-reign-booster-box/'
+urls = [RedNails2
 ]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -28,10 +31,10 @@ for url in urls:
 
 
 # Kanzen Games, Skaf Express
-urls = ['https://kanzengames.com/collections/cr-sealed-product/products/copy-of-pokemon-chilling-reign-booster-box-pre-order-june-18th-2021',
-#'https://www.skafexpress.ca/products/pokemon-swsh6-chilling-reign-elite-trainer-box-blue'
-]
+urls = [KanzenGames, SkafExpress]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -46,9 +49,10 @@ for url in urls:
 
 
 # Wizard's Tower / Kanata Tcg
-urls = ['https://www.kanatacg.com/catalog/pokemon_sealed_products-pokemon_booster_packs/chilling_reign_booster_box_36_packs/499031'
-]
+urls = [WizardsTower]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -90,9 +94,10 @@ for url in urls:
 
 
 # Game Shack
-urls = ['https://gameshack.ca/pokemon-ss5-chilling-reign-booster-box.html'
-]
+urls = [GameShack]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -105,9 +110,10 @@ for url in urls:
 
 
 # The League's Den
-urls = ['https://www.theleaguesden.com/product/pokemon-tcg-sword-shield-chilling-reign-booster-box-sealed-36-packs-/68'
-]
+urls = [TheLeaguesDen]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     options = webdriver.ChromeOptions() 
     options.add_experimental_option("excludeSwitches", ["enable-logging"]) # Surpess bluetooth adapter error since my pc doesn't have bluetooth
     browser = webdriver.Chrome(options=options) # Need to use chromium webdriver since these websites load stock dynamically
@@ -136,11 +142,10 @@ for url in urls:
 
 
 # New Realm Games, Cardboard Memories, Face to Face Games
-urls = ['https://newrealmgames.com/collections/pokemon-sealed-product/products/pokemon-chilling-reign-booster-box-pre-order-june-2021',
-'https://www.cardboardmemories.ca/products/pokemon-sword-and-shield-chilling-reign-booster-box?',
-'https://www.facetofacegames.com/pokemon-tcg-sword-shield-chilling-reign-booster-box/'
-]
+urls = [NewRealmGames,CardboardMemories,FaceToFaceGames]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     options = webdriver.ChromeOptions() 
     options.add_experimental_option("excludeSwitches", ["enable-logging"]) # Surpess bluetooth adapter error since my pc doesn't have bluetooth
     browser = webdriver.Chrome(options=options) # Need to use chromium webdriver since these websites load stock dynamically
@@ -178,10 +183,10 @@ for url in urls:
 
 
 # Fox and Dragon Hobbies, Optimum Collection
-urls = ['https://www.foxanddragonhobbies.ca/collections/pokemon-cards/products/presale-booster-box-chilling-reign-pokemon-cards',
-'https://optimumcollection.ca/products/pokemon-chilling-reign-booster-box-pre-order'
-]
+urls = [FoxAndDragonHobbies,OptimumCollection]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     options = webdriver.ChromeOptions() 
     options.add_experimental_option("excludeSwitches", ["enable-logging"]) # Surpess bluetooth adapter error since my pc doesn't have bluetooth
     browser = webdriver.Chrome(options=options) # Need to use chromium webdriver since these websites load stock dynamically
@@ -197,14 +202,10 @@ for url in urls:
 
 
 # Infinity Cards & Collectibles, House of Cards, Miraj Trading, Duel Kingdom, K-OS Collectibles, Geekitude
-urls = [#'https://www.infinitycards.ca/collections/booster-box/products/pre-order-swsh5-battle-styles-booster-box-releases-march-19-2021',
-'https://houseofcards.ca/collections/pokemon-booster-boxes/products/sword-shield-chilling-reign-booster-box-preorder',
-'https://www.mirajtrading.com/collections/pokemon/products/pokemonswordshieldchillingreignboosterbox',
-'https://duelkingdom.ca/collections/pokemon-booster-boxes/products/pokemon-tcg-sword-shield-chilling-reign-booster-box',
-'https://koscollectibles.ca/collections/pokemon/products/sword-and-shield-vivid-voltage-booster-box',
-'https://geekittude.com/products/pokemon-sword-shield-chilling-reign-booster-box'
-]
+urls = [InfinityCardsAndCollectibles,HouseOfCards,MirajTrading,DuelKingdom,KOSCollectibles,Geekitude]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -223,10 +224,10 @@ for url in urls:
 
 
 # J&J and Prisma TCG
-urls = [#'https://shop.jjcards.com/Pokemon-Sword-Shield-Battle-Styles-Booster-Box_p_20799.html',
-'https://www.prismatcg.com/chilling-reign-pokemon-tcg-booster-box-w2'
-]
+urls = [JandJCollectibles, PrismaTCG]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -238,15 +239,10 @@ for url in urls:
 
 
 # Jeux3Dragons, TopDeck Hero, Gods Arena, Dolly's, The Toy Trove, Dragon World, and Atlas Collectables
-urls = ['https://www.jeux3dragons.com/catalog/pokemon_sealed_products/sword__shield_chilling_reign_booster_box/497704',
-'https://www.topdeckhero.com/catalog/pokemon_sealed_products-pokemon_booster_box/chilling_reign_booster_box/477706',
-'https://www.godsarena.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/1706783',
-'https://www.dollys.ca/catalog/pokemon_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/741283',
-'https://www.thetoytrove.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield_chilling_reign_booster_box/2043790',
-'https://dragontcg.crystalcommerce.com/catalog/pokemon_sealed_products__u-pokemon_booster_boxes/pokemon_swsh6_chilling_reign_booster_box/2052236',
-#'https://www.atlascollectables.com/catalog/pokemon_sealed_products-pokemon_booster_boxes/sword__shield__battle_styles_booster_box/2043841'
-]
+urls = [Jeux3Dragons,TopDeckHero,GodsArena,Dollys,TheToyTrove,DragonWorld,AtlasCollectibles]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     header = {
     'User-Agent': 'My User Agent 1.0',
     'From': 'youremail@domain.com'
@@ -267,10 +263,10 @@ for url in urls:
 
 
 # The Cards Vault and HappyTCG
-urls = ['https://thecardsvault.com/product/pre-order-pokemon-chilling-reign-booster-box-available',
-'https://happytcg.ca/shop/pokemon-tcg/latest-sets/chilling-reign/sword-shield-chilling-reign-booster-box-pre-order/'
-]
+urls = [TheCardsVault,HappyTCG]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     header = {
     'User-Agent': 'My User Agent 1.0',
     'From': 'youremail@domain.com'
@@ -291,11 +287,10 @@ for url in urls:
 
 
 # KD Collectibles, Game Palace, Skyfox Games
-urls = ['https://kdcollectibles.ca/collections/pokemon-booster-boxes/products/chilling-reign-booster-box-ships-immediately',
-'https://gamepalace.ca/products/pre-order-pokemon-chilling-reign-booster-box?_pos=1&_sid=d0c3e4848&_ss=r&variant=39927348232388',
-'https://skyfoxgames.com/collections/booster-box/products/pokemon-chilling-reign-booster-box-pre-order'
-]
+urls = [KDCollectibles,GamePalace,SkyFoxGames]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -307,10 +302,10 @@ for url in urls:
 
 
 # BreakawaySC and Zephr Epic
-urls = ['https://breakawaysc.com/product/pokemon-sword-and-shield-chilling-reign-booster-box/',
-'https://zephyrepic.com/product/pokemon-sword-and-shield-chilling-reign-booster-box-raffle-item/'
-]
+urls = [BreakawaySC, ZephyrEpic]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     # Need to pretend to be a web browser and breakawaysc doesn't allow automated python requests
     header = {
     'User-Agent': 'My User Agent 1.0',
@@ -330,10 +325,10 @@ for url in urls:
 
 
 # SP Shop and 401 Games
-urls = ['https://www.spshop.ca/collections/booster-boxes/products/pokemon-chilling-reign-booster-box',
-'https://store.401games.ca/collections/pokemon-sealed-product/products/pokemon-chillingreign-boosterbox'
-]
+urls = [SPShop, The401Games]
 for url in urls:
+    if (url == ''): # Skip website if blank
+        continue
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -344,7 +339,7 @@ for url in urls:
     results.append(data)
 
 
-# result = (price, stock, title)
+# data = (price, stock, title)
 # Filter prices
 index = 0
 while index < len(results):
